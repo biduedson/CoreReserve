@@ -1,0 +1,6 @@
+@CoreReserve.PublicApi_HostAddress = http://localhost:5100
+
+GET {{CoreReserve.PublicApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
