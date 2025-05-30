@@ -15,11 +15,12 @@ namespace CoreReserve.Domain.Entities.UserAggregate
         public bool IsActive { get; } = true;
         public DateTime CreatedAt { get; }
 
-        public User(string name, EGender gender, Email email, DateTime createdAt)
+        public User(string name, EGender gender, Email email, string password, DateTime createdAt)
         {
             Name = name;
             Gender = gender;
             Email = email;
+            Password = password;
             CreatedAt = createdAt;
 
             AddDomainEvent(new UserCreatedEvent(Id, name, gender, email.Address, createdAt));
@@ -40,6 +41,7 @@ namespace CoreReserve.Domain.Entities.UserAggregate
             if (_isDeleted) return;
 
             _isDeleted = true;
+            AddDomainEvent(new UserDeletedEvent(Id, Name, Gender, Email.Address, CreatedAt));
         }
     }
 }
