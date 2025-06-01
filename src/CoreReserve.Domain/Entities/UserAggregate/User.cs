@@ -4,7 +4,7 @@ using CoreReserve.Domain.ValueObjects;
 
 namespace CoreReserve.Domain.Entities.UserAggregate
 {
-    public class User : BaseEntity
+    public class User : BaseEntity, IAggregateRoot
     {
         private bool _isDeleted;
 
