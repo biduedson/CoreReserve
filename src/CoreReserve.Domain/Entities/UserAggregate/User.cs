@@ -11,11 +11,11 @@ namespace CoreReserve.Domain.Entities.UserAggregate
         public string Name { get; }
         public EGender Gender { get; }
         public Email Email { get; private set; }
-        public string Password { get; }
+        public Password Password { get; }
         public bool IsActive { get; } = true;
         public DateTime CreatedAt { get; }
 
-        public User(string name, EGender gender, Email email, string password, DateTime createdAt)
+        public User(string name, EGender gender, Email email, Password password, DateTime createdAt)
         {
             Name = name;
             Gender = gender;
