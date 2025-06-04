@@ -16,7 +16,6 @@ namespace CoreReserve.Query.QueriesModel
         /// <param name="name">Nome do usuario.</param>
         /// <param name="gender">Gênero do usuario.</param>
         /// <param name="email">Endereço de e-mail do usuario.</param>
-        /// <param name="password">Endereço de e-mail do usuario.</param>
         /// <param name="isActive">Define se  o usuario esta ativo</param>
         /// <param name="createdAt">Data de criaçao do usuario.</param>
         public UserQueryModel(
@@ -24,13 +23,11 @@ namespace CoreReserve.Query.QueriesModel
             string name,
             string gender,
             string email,
-            string password,
             bool isActive,
             DateTime createdAt)
         {
             Id = id;
             Name = name;
-            Password = password;
             Gender = gender;
             Email = email;
             CreatedAt = createdAt;
@@ -63,11 +60,6 @@ namespace CoreReserve.Query.QueriesModel
         /// Endereço de e-mail do usuario.
         /// </summary>
         public string Email { get; private init; }
-
-        /// <summary>
-        /// password do usuario.
-        /// </summary>
-        public string Password { get; private set; }
 
         /// <summary>
         /// Define se  o usuario esta ativo.
