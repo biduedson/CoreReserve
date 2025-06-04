@@ -26,8 +26,6 @@ namespace CoreReserve.Domain.Entities.UserAggregate
             AddDomainEvent(new UserCreatedEvent(Id, name, gender, email.Address, createdAt));
         }
 
-        public User() { }
-
         public void ChangeEmail(Email newEmail)
         {
             if (Email.Equals(newEmail))
