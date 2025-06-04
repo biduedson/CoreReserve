@@ -11,7 +11,7 @@ namespace CoreReserve.Domain.Entities.UserAggregate
         public string Name { get; }
         public EGender Gender { get; }
         public Email Email { get; private set; }
-        public Password Password { get; }
+        public Password Password { get; private set; }
         public bool IsActive { get; } = true;
         public DateTime CreatedAt { get; }
 
