@@ -34,7 +34,7 @@ namespace CoreReserve.Infrastructure.Data.Mappings
                 .HasMaxLength(6)
                 .HasConversion<string>();
 
-            // Mapeamento do Value Object Email dentro da entidade Customer
+            // Mapeamento do Value Object Email dentro da entidade User
             builder.OwnsOne(user => user.Email, ownedNav =>
             {
                 ownedNav
@@ -49,11 +49,11 @@ namespace CoreReserve.Infrastructure.Data.Mappings
                     .IsUnique();
             });
 
-            // Configura Password como obrigatório e define um tamanho máximo de 100 caracteres
+            // Configura Password como obrigatório e define um tamanho máximo de 255 caracteres
             builder
                 .Property(user => user.Password)
-                .IsRequired() // NOT NULL
-                .HasMaxLength(128);
+                .HasMaxLength(255)
+                .IsRequired(); // NOT NULL
 
             // Configura CreatedAt como obrigatório e define o tipo da coluna como DATE
             builder
