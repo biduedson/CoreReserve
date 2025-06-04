@@ -47,7 +47,7 @@ namespace CoreReserve.Query.Application.User.Handlers
 
             // Se o usuário não for encontrado, retorna um erro indicando que não há registros correspondentes.
             return user == null
-                ? Result<UserQueryModel>.NotFound($"Nenhum usuário encontrado com o Id: {request.Id}")
+                ? Result<UserQueryModel>.NotFound($"No user found with Id: {request.Id}")
                 : Result<UserQueryModel>.Success(user);
         }
     }
