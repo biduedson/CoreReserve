@@ -7,7 +7,7 @@ namespace CoreReserve.Domain.Factories
     public static class UserFactory
     {
         public static Result<User> Create(
-             string name,
+            string name,
             EGender gender,
             string email,
             string password,
@@ -15,12 +15,21 @@ namespace CoreReserve.Domain.Factories
         )
         {
             var emailResult = Email.Create(email);
-            return !emailResult.IsSuccess
-                   ? Result<User>.Error(new ErrorList(emailResult.Errors.ToArray()))
-                   : Result<User>.Success(new User(name, gender, emailResult.Value, password, createdAt));
+            var passwordResult = Password.Create(password);
+            var errors = new List<string>();
+
+            if (!emailResult.IsSuccess)
+                errors.AddRange(emailResult.Errors);
+
+            if (!passwordResult.IsSuccess)
+                errors.AddRange(passwordResult.Errors);
+
+            return errors.Any() ? Result<User>.Error(new ErrorList(errors.ToArray())) :
+            Result<User>.Success(new User(name, gender, emailResult.Value, passwordResult.Value, createdAt));
+
         }
 
-        public static User Create(string name, EGender gender, Email email, string password, DateTime createdAt)
+        public static User Create(string name, EGender gender, Email email, Password password, DateTime createdAt)
            => new(name, gender, email, password, createdAt);
     }
 }
