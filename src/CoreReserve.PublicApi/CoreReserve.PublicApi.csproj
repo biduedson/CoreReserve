@@ -60,4 +60,10 @@
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CoreReserve.Application\CoreReserve.Application.csproj" />
+    <ProjectReference Include="..\CoreReserve.Infrastructure\CoreReserve.Infrastructure.csproj" />
+    <ProjectReference Include="..\CoreReserve.Query\CoreReserve.Query.csproj" />
+  </ItemGroup>
+
 </Project>
