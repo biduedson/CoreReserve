@@ -1,20 +1,24 @@
 using BCrypt.Net;
+using CoreReserve.Core.AppSettings;
 using CoreReserve.Core.SharedKernel;
+using Microsoft.Extensions.Options;
 
 namespace CoreReserve.Infrastructure.Data.Services
 {
     public class HashService : IHashService
     {
-        private readonly int _workFactor;
 
-        public HashService(int workFactor = 12)
+        private readonly IOptions<SecuriTyOptions> _options;
+
+        public HashService(IOptions<SecuriTyOptions> options)
         {
-            _workFactor = workFactor;
+            _options = options;
         }
 
         public string HashPassword(string password)
         {
-            return BCrypt.Net.BCrypt.HashPassword(password, _workFactor);
+            var workFactor = _options.Value.WorkFactor;
+            return BCrypt.Net.BCrypt.HashPassword(password, workFactor);
         }
 
         public bool VerifyPassword(string password, string hashedPassword)
