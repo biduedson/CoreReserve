@@ -36,7 +36,9 @@ namespace CoreReserve.Infrastructure.Data
             services
                 .AddScoped<WriteDbContext>()
                 .AddScoped<EventStoreDbContext>()
-                .AddScoped<IUnitOfWork, UnitOfWork>();
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddScoped<IHashService, HashService>();
+
 
         /// <summary>
         /// Adiciona os repositórios que oferecem operações apenas de escrita à coleção de serviços.
