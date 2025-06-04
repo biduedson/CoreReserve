@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using CoreReserve.Core.AppSettings;
 using CoreReserve.Core.SharedKernel;
 using CoreReserve.Domain.Entities.UserAggregate;
 using CoreReserve.Infrastructure.Data.Context;
@@ -36,7 +37,13 @@ namespace CoreReserve.Infrastructure.Data
             services
                 .AddScoped<WriteDbContext>()
                 .AddScoped<EventStoreDbContext>()
-                .AddScoped<IUnitOfWork, UnitOfWork>();
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddScoped<IHashService>(provider =>
+                {
+                    var options = provider.GetRequiredService<SecuriTyOptions>();
+                    return new HashService(workFactor: options.WorkFactor);
+                });
+
 
         /// <summary>
         /// Adiciona os repositórios que oferecem operações apenas de escrita à coleção de serviços.
