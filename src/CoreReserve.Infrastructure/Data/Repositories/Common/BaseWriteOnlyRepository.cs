@@ -26,7 +26,7 @@ namespace CoreReserve.Infrastructure.Data.Repositories.Common
                 dbContext
                     .Set<TEntity>()
                     .AsNoTrackingWithIdentityResolution()
-                    .FirstOrDefault(entity => entity.Id.Equals(id)));
+                    .FirstOrDefault(entity => entity.Id.Equals(id)))!;
 
         private readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
         protected readonly WriteDbContext DbContext = dbContext;

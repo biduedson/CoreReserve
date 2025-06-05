@@ -30,7 +30,7 @@ namespace CoreReserve.Query
         {
             var assembly = Assembly.GetAssembly(typeof(IQueryMarker));
             return services
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly)) // Registra handlers do MediatR.
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly!)) // Registra handlers do MediatR.
                 .AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg => cfg.AddMaps(assembly)))) // Configura AutoMapper.
                 .AddValidatorsFromAssembly(assembly); // Adiciona validadores do FluentValidation.
         }

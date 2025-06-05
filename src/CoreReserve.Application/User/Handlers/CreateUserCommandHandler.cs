@@ -51,7 +51,7 @@ namespace CoreReserve.Application.User.Handlers
             var user = UserFactory.Create(
                 request.Name,
                 request.Gender,
-                email,
+                email.Address,
                 request.Password,
                 request.CreatedAt
             );
@@ -64,7 +64,7 @@ namespace CoreReserve.Application.User.Handlers
 
             // Retorna o ID do cliente criado.
             return Result<CreatedUserResponse>.Created(
-                new CreatedUserResponse(user.Id), location: $"/api/users/{user.Id}");
+                new CreatedUserResponse(user.Value.Id), location: $"/api/users/{user.Value.Id}");
         }
     }
 }
