@@ -7,12 +7,10 @@ namespace CoreReserve.Domain.Entities.UserAggregate
     public class User : BaseEntity, IAggregateRoot
     {
         private bool _isDeleted;
-
         public string Name { get; }
         public EGender Gender { get; }
         public Email Email { get; private set; }
         public Password Password { get; private set; }
-        public bool IsActive { get; } = true;
         public DateTime CreatedAt { get; }
 
         public User(string name, EGender gender, Email email, Password password, DateTime createdAt)
@@ -26,7 +24,7 @@ namespace CoreReserve.Domain.Entities.UserAggregate
             AddDomainEvent(new UserCreatedEvent(Id, name, gender, email.Address, createdAt));
         }
 
-        public User() { }
+        private User() { }
 
         public void ChangeEmail(Email newEmail)
         {

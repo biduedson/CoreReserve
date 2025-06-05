@@ -34,7 +34,7 @@ namespace CoreReserve.Query.Profiles
         /// Método auxiliar para criar um modelo de consulta a partir de um evento.
         /// </summary>
         private static UserQueryModel CreateUserQueryModel<TEvent>(TEvent @event) where TEvent : UserBaseEvent =>
-            new(@event.Id, @event.Name, @event.Gender.ToString(), @event.Email, @event.IsActive, @event.CreatedAt);
+            new(@event.Id, @event.Name, @event.Gender.ToString(), @event.Email, @event.CreatedAt);
     }
 }
 

@@ -14,6 +14,8 @@ using CoreReserve.Application.User.Responses;
 using CoreReserve.PublicApi.Models;
 using CoreReserve.Application.User.Commands;
 using CoreReserve.PublicApi.Extensions;
+using CoreReserve.Query.QueriesModel;
+using CoreReserve.Query.Application.User.Queries;
 
 
 namespace CoreReserve.PublicApi.Controllers.v1
