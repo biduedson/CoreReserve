@@ -49,11 +49,16 @@ namespace CoreReserve.Infrastructure.Data.Mappings
                     .IsUnique();
             });
 
-            // Configura Password como obrigatório e define um tamanho máximo de 255 caracteres
-            builder
-                .Property(user => user.Password)
+            // Mapeamento do Value Object Password dentro da entidade User
+            builder.OwnsOne(user => user.Password, ownedNav =>
+            {
+                ownedNav
+                .Property(password => password.NewPassword)
+                .IsRequired() // NOT NULL
                 .HasMaxLength(255)
-                .IsRequired(); // NOT NULL
+                .HasColumnName(nameof(User.Password));
+
+            });
 
             // Configura CreatedAt como obrigatório e define o tipo da coluna como DATE
             builder
