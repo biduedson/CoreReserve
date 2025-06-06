@@ -17,7 +17,7 @@ namespace CoreReserve.Infrastructure.Data.Context
         public DbSet<User> Users => Set<User>();
 
         /// <summary>
-        /// Configura o modelo do banco de dados, aplicando as configurações da entidade Customer.
+        /// Configura o modelo do banco de dados, aplicando as configurações da entidade User.
         /// </summary>
         /// <param name="modelBuilder">O construtor do modelo.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,8 +33,8 @@ namespace CoreReserve.Infrastructure.Data.Context
     /*
     ✅ Classe WriteDbContext → Define o contexto de banco de dados para operações de escrita. 
     ✅ Herança de BaseDbContext → Reutiliza configurações globais do banco de dados. 
-    ✅ Propriedade Customers → Define um conjunto do Entity Framework Core para manipulação de entidades Customer. 
-    ✅ Método OnModelCreating() → Aplica a configuração da entidade Customer por meio da classe CustomerConfiguration. 
+    ✅ Propriedade Users → Define um conjunto do Entity Framework Core para manipulação de entidades User. 
+    ✅ Método OnModelCreating() → Aplica a configuração da entidade User por meio da classe CustomerConfiguration. 
     ✅ Esse contexto permite a gestão eficiente de clientes, centralizando regras de persistência e garantindo consistência dos dados. 
     */
 
