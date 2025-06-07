@@ -73,7 +73,28 @@ builder.Services.AddControllers()
         behaviorOptions.SuppressModelStateInvalidFilter = true;
     })
     .AddJsonOptions(_ => { });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ScalarPolicy", policy =>
+    {
+        if (builder.Environment.IsDevelopment())
+        {
+            // Em desenvolvimento: permite qualquer origem
+            policy.SetIsOriginAllowed(_ => true)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
+        else
+        {
+            // Em produção: URLs específicas
+            policy.WithOrigins("https://your-production-domain.com")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        }
+    });
+});
 /// <summary>
 /// Registra todos os serviços específicos da aplicação Core Reserve
 /// Inclui configurações, infraestrutura, handlers, repositórios e cache
@@ -174,6 +195,7 @@ app.MapScalarApiReference(scalarOptions =>
 /// Configuração do pipeline de middlewares na ordem correta
 /// Cada middleware processa requisições na ordem definida
 /// </summary>
+app.UseCors("ScalarPolicy");       // Politica de cors
 app.UseErrorHandling();           // Tratamento global de erros
 app.UseResponseCompression();     // Compressão de respostas HTTP
 app.UseHttpsRedirection();        // Redirecionamento para HTTPS
