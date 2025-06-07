@@ -52,8 +52,7 @@ namespace CoreReserve.Application.User.Handlers
                 request.Name,
                 request.Gender,
                 email.Address,
-                request.Password,
-                request.CreatedAt
+                request.Password
             );
 
             // Adiciona a entidade ao repositório.

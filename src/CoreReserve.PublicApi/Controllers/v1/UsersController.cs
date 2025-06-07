@@ -33,7 +33,7 @@ namespace CoreReserve.PublicApi.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/[controller]")]
-    public class UserController(IMediator mediator) : ControllerBase
+    public class UsersController(IMediator mediator) : ControllerBase
     {
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
