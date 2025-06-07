@@ -28,7 +28,7 @@ namespace CoreReserve.Query.QueriesModel
             Name = name;
             Gender = gender;
             Email = email;
-            CreatedAt = createdAt;
+            CreatedAt = createdAt.Date;
         }
 
         /// <summary>
