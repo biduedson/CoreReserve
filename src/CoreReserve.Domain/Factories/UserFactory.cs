@@ -27,8 +27,7 @@ public static class UserFactory
         string name,
         EGender gender,
         string email,
-        string password,
-        DateTime createdAt
+        string password
     )
     {
         var emailResult = Email.Create(email);
@@ -44,7 +43,7 @@ public static class UserFactory
         // Retorna erros de validação, caso existam.
         return errors.Any()
             ? Result<User>.Error(new ErrorList(errors.ToArray()))
-            : Result<User>.Success(new User(name, gender, emailResult.Value, passwordResult.Value, createdAt));
+            : Result<User>.Success(new User(name, gender, emailResult.Value, passwordResult.Value));
     }
 
     /// <summary>
@@ -57,8 +56,8 @@ public static class UserFactory
     /// <param name="password">Objeto <see cref="Password"/> já validado.</param>
     /// <param name="createdAt">Data e hora de criação do usuário.</param>
     /// <returns>Um objeto <see cref="User"/> instanciado com os valores fornecidos.</returns>
-    public static User Create(string name, EGender gender, Email email, Password password, DateTime createdAt)
-        => new(name, gender, email, password, createdAt);
+    public static User Create(string name, EGender gender, Email email, Password password)
+        => new(name, gender, email, password);
 }
 
 // -----------------------------------------
