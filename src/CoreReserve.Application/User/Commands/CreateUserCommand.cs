@@ -37,13 +37,6 @@ namespace CoreReserve.Application.User.Commands
         [MinLength(6)]
         [MaxLength(20)]
         public string Password { get; set; }
-
-        /// <summary>
-        /// Data de criação do cliente.
-        /// </summary>
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime CreatedAt { get; set; }
     }
 }
 
