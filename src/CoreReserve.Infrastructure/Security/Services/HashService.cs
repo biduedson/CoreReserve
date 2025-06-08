@@ -3,7 +3,7 @@ using CoreReserve.Core.AppSettings;
 using CoreReserve.Core.SharedKernel;
 using Microsoft.Extensions.Options;
 
-namespace CoreReserve.Infrastructure.Data.Services
+namespace CoreReserve.Infrastructure.Security.Services
 {
     public class HashService : IHashService
     {
