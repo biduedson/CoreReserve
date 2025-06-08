@@ -17,7 +17,7 @@ namespace CoreReserve.Infrastructure.Data.Services
 
         public string HashPassword(string password)
         {
-            var workFactor = _options.Value.WorkFactor;
+            var workFactor = _options.Value.Bcrypt.WorkFactor;
             return BCrypt.Net.BCrypt.HashPassword(password, workFactor);
         }
 
