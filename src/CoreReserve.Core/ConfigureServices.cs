@@ -12,8 +12,10 @@ namespace CoreReserve.Core
         public static IServiceCollection ConfigureAppSettings(this IServiceCollection services) =>
         services
             .AddOptionsWithValidation<ConnectionOptions>()
-            .AddOptionsWithValidation<CacheOptions>();
-
+            .AddOptionsWithValidation<CacheOptions>()
+            .AddOptionsWithValidation<SecuriTyOptions>()
+            .AddOptionsWithValidation<JwtOptions>()
+            .AddOptionsWithValidation<BcryptOptions>();
 
         private static IServiceCollection AddOptionsWithValidation<TOptions>(this IServiceCollection services)
     where TOptions : class, IAppOptions

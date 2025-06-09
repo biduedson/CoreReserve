@@ -5,9 +5,12 @@ namespace CoreReserve.Core.AppSettings
 {
     public sealed class SecuriTyOptions : IAppOptions
     {
-        static string IAppOptions.ConfigSectionPath => "Security:Brcypt";
+        static string IAppOptions.ConfigSectionPath => "Security";
 
         [Required]
-        public int WorkFactor { get; private init; }
+        public BcryptOptions Bcrypt { get; private init; }
+
+        [Required]
+        public JwtOptions Jwt { get; private init; }
     }
 }

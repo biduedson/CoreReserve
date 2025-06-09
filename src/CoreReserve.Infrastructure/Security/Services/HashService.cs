@@ -3,21 +3,13 @@ using CoreReserve.Core.AppSettings;
 using CoreReserve.Core.SharedKernel;
 using Microsoft.Extensions.Options;
 
-namespace CoreReserve.Infrastructure.Data.Services
+namespace CoreReserve.Infrastructure.Security.Services
 {
-    public class HashService : IHashService
+    internal sealed class HashService(IOptions<SecuriTyOptions> options) : IHashService
     {
-
-        private readonly IOptions<SecuriTyOptions> _options;
-
-        public HashService(IOptions<SecuriTyOptions> options)
-        {
-            _options = options;
-        }
-
         public string HashPassword(string password)
         {
-            var workFactor = _options.Value.WorkFactor;
+            var workFactor = options.Value.Bcrypt.WorkFactor;
             return BCrypt.Net.BCrypt.HashPassword(password, workFactor);
         }
 
