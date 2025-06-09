@@ -9,19 +9,14 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CoreReserve.Infrastructure.Security.Services
 {
-    internal sealed class JwtTokenService : IJwtTokenService
+    internal sealed class JwtTokenService(
+        IOptions<SecuriTyOptions> options,
+        ILogger<JwtTokenService> logger) : IJwtTokenService
     {
-        private readonly IOptions<SecuriTyOptions> _options;
-        private readonly ILogger<JwtTokenService> _logger;
 
-        public JwtTokenService(IOptions<SecuriTyOptions> options, ILogger<JwtTokenService> logger)
-        {
-            _options = options;
-            _logger = logger;
-        }
         public async Task<string> GenerateAccessTokenAsync(Guid userId, string userName, string email)
         {
-            var jwt = _options.Value.Jwt;
+            var jwt = options.Value.Jwt;
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey));
             var credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
@@ -46,7 +41,7 @@ namespace CoreReserve.Infrastructure.Security.Services
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            _logger.LogInformation(
+            logger.LogInformation(
                 "Access token gerado para usuário {userId}, expira em {Expiration}",
                 userId, expiration);
 
@@ -58,7 +53,7 @@ namespace CoreReserve.Infrastructure.Security.Services
 
             try
             {
-                var jwt = _options.Value.Jwt;
+                var jwt = options.Value.Jwt;
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var validationParameters = new TokenValidationParameters
                 {
@@ -78,7 +73,7 @@ namespace CoreReserve.Infrastructure.Security.Services
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Falha na validação do token: {Error}", ex.Message);
+                logger.LogWarning("Falha na validação do token: {Error}", ex.Message);
                 return null;
             }
         }

@@ -5,19 +5,11 @@ using Microsoft.Extensions.Options;
 
 namespace CoreReserve.Infrastructure.Security.Services
 {
-    public class HashService : IHashService
+    internal sealed class HashService(IOptions<SecuriTyOptions> options) : IHashService
     {
-
-        private readonly IOptions<SecuriTyOptions> _options;
-
-        public HashService(IOptions<SecuriTyOptions> options)
-        {
-            _options = options;
-        }
-
         public string HashPassword(string password)
         {
-            var workFactor = _options.Value.Bcrypt.WorkFactor;
+            var workFactor = options.Value.Bcrypt.WorkFactor;
             return BCrypt.Net.BCrypt.HashPassword(password, workFactor);
         }
 
