@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
-using System.Threading.Tasks;
 using Asp.Versioning;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using CoreReserve.Application;
-using CoreReserve.Infrastructure;
-using CoreReserve.Query;
 using CoreReserve.Application.User.Responses;
 using CoreReserve.PublicApi.Models;
 using CoreReserve.Application.User.Commands;
@@ -17,24 +11,27 @@ using CoreReserve.PublicApi.Extensions;
 using CoreReserve.Query.QueriesModel;
 using CoreReserve.Query.Application.User.Queries;
 
-
 namespace CoreReserve.PublicApi.Controllers.v1
 {
-    ////////////////////////
-    // POST: /api/users
-    ////////////////////////
-
-    /// /// <summary>
-    /// Registra um novo cliente.
+    /// <summary>
+    /// 🧑‍💼 Controller responsável pelo gerenciamento de usuários
+    /// Implementa operações CRUD completas seguindo padrões REST e CQRS
     /// </summary>
-    /// <response code="201">Retorna o Id do novo usuario.</response>
-    /// <response code="400">Retorna lista de erros se a requisição for inválida.</response>
-    /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/[controller]")]
     public class UsersController(IMediator mediator) : ControllerBase
     {
+        #region 📝 CREATE - Criação de Usuário
+
+        /// <summary>
+        /// ✨ Registra um novo usuário no sistema
+        /// </summary>
+        /// <param name="command">Dados do usuário a ser criado</param>
+        /// <returns>ID do usuário criado</returns>
+        /// <response code="201">✅ Usuário criado com sucesso - Retorna o ID do novo usuário</response>
+        /// <response code="400">❌ Dados inválidos - Retorna lista de erros de validação</response>
+        /// <response code="500">💥 Erro interno do servidor - Erro inesperado</response>
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
@@ -42,15 +39,21 @@ namespace CoreReserve.PublicApi.Controllers.v1
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Create([FromBody][Required] CreateUserCommand command) =>
-                 (await mediator.Send(command)).ToActionResult();
+            (await mediator.Send(command)).ToActionResult();
+
+        #endregion
+
+        #region 🗑️ DELETE - Exclusão de Usuário
 
         /// <summary>
-        /// Exclui o usuario pelo Id.
+        /// 🗑️ Remove um usuário do sistema pelo ID
         /// </summary>
-        /// <response code="200">Retorna a resposta com a mensagem de sucesso.</response>
-        /// <response code="400">Retorna lista de erros se a requisição for inválida.</response>
-        /// <response code="404">Quando nenhum usuario é encontrado pelo Id fornecido.</response>
-        /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
+        /// <param name="id">Identificador único do usuário</param>
+        /// <returns>Confirmação da exclusão</returns>
+        /// <response code="200">✅ Usuário excluído com sucesso</response>
+        /// <response code="400">❌ ID inválido - Formato incorreto</response>
+        /// <response code="404">🔍 Usuário não encontrado - ID não existe</response>
+        /// <response code="500">💥 Erro interno do servidor - Erro inesperado</response>
         [HttpDelete("{id:guid}")]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
@@ -61,17 +64,19 @@ namespace CoreReserve.PublicApi.Controllers.v1
         public async Task<IActionResult> Delete([Required] Guid id) =>
             (await mediator.Send(new DeleteUserCommand(id))).ToActionResult();
 
-        ///////////////////////////
-        // GET: /api/users/{id}
-        ///////////////////////////
+        #endregion
+
+        #region 🔍 READ - Consulta Individual de Usuário
 
         /// <summary>
-        /// Obtém o usuario pelo Id.
+        /// 🔍 Obtém os dados de um usuário específico pelo ID
         /// </summary>
-        /// <response code="200">Retorna o usuario.</response>
-        /// <response code="400">Retorna lista de erros se a requisição for inválida.</response>
-        /// <response code="404">Quando nenhum cliente é encontrado pelo Id fornecido.</response>
-        /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
+        /// <param name="id">Identificador único do usuário</param>
+        /// <returns>Dados completos do usuário</returns>
+        /// <response code="200">✅ Usuário encontrado - Retorna dados do usuário</response>
+        /// <response code="400">❌ ID inválido - Formato incorreto</response>
+        /// <response code="404">🔍 Usuário não encontrado - ID não existe</response>
+        /// <response code="500">💥 Erro interno do servidor - Erro inesperado</response>
         [HttpGet("{id:guid}")]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
@@ -82,15 +87,16 @@ namespace CoreReserve.PublicApi.Controllers.v1
         public async Task<IActionResult> GetById([Required] Guid id) =>
             (await mediator.Send(new GetUserByIdQuery(id))).ToActionResult();
 
-        //////////////////////
-        // GET: /api/users
-        //////////////////////
+        #endregion
+
+        #region 📋 READ ALL - Listagem de Usuários
 
         /// <summary>
-        /// Obtém uma lista de todos os usuarios.
+        /// 📋 Obtém uma lista completa de todos os usuários cadastrados
         /// </summary>
-        /// <response code="200">Retorna a lista de usuarios.</response>
-        /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
+        /// <returns>Lista de todos os usuários</returns>
+        /// <response code="200">✅ Lista obtida com sucesso - Retorna todos os usuários</response>
+        /// <response code="500">💥 Erro interno do servidor - Erro inesperado</response>
         [HttpGet]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
@@ -98,60 +104,71 @@ namespace CoreReserve.PublicApi.Controllers.v1
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAll() =>
             (await mediator.Send(new GetAllUserQuery())).ToActionResult();
+
+        #endregion
     }
 }
 
 /*
- * EXPLICAÇÃO DO CÓDIGO:
+ * 🎯 EXPLICAÇÃO DETALHADA DO CÓDIGO
+ * ================================
  * 
- * Este é um controller de API REST para gerenciar Usuarios (Users) em uma aplicação ASP.NET Core.
+ * 📊 VISÃO GERAL:
+ * Este controller implementa uma API REST completa para gerenciamento de usuários,
+ * seguindo as melhores práticas de desenvolvimento moderno em .NET.
  * 
- * CARACTERÍSTICAS PRINCIPAIS:
- * - Usa o padrão CQRS (Command Query Responsibility Segregation) através do MediatR
- * - Implementa versionamento de API (versão 1.0) com Asp.Versioning
- * - Segue as convenções REST para operações CRUD
+ * 🏗️ ARQUITETURA IMPLEMENTADA:
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │                    🎯 PADRÕES UTILIZADOS                    │
+ * ├─────────────────────────────────────────────────────────────┤
+ * │ 🔄 CQRS (Command Query Responsibility Segregation)         │
+ * │ 📡 Mediator Pattern - Desacoplamento total                 │
+ * │ 🎭 Repository Pattern - Abstração de dados                 │
+ * │ 🔧 Dependency Injection - Inversão de controle             │
+ * │ 📝 REST API - Padrões HTTP semânticos                      │
+ * │ 🏷️ API Versioning - Evolução sem quebrar compatibilidade   │
+ * └─────────────────────────────────────────────────────────────┘
  * 
- * ESTRUTURA:
- * 1. [ApiController] - Indica que é um controller de API com validações automáticas
- * 2. [ApiVersion("1.0")] - Define a versão da API
- * 3. [Route("api/[controller]")] - Define a rota base como /api/users
- * 4. Injeção de dependência do IMediator via construtor primário (C# 12)
+ * 🎨 ESTRUTURA DO CONTROLLER:
+ * ├── 📝 CREATE (POST)   → Criação de novos usuários
+ * ├── 🗑️ DELETE (DELETE) → Remoção de usuários existentes
+ * ├── 🔍 READ (GET/{id}) → Consulta individual por ID
+ * └── 📋 READ ALL (GET)  → Listagem completa de usuários
  * 
- * MÉTODOS IMPLEMENTADOS:
+ * 🔧 RECURSOS TÉCNICOS:
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │ 🚀 C# 12 - Primary Constructors                            │
+ * │ ⚡ Async/Await - Operações não-bloqueantes                  │
+ * │ 🛡️ Data Annotations - Validações automáticas               │
+ * │ 📄 Swagger/OpenAPI - Documentação automática               │
+ * │ 🎯 Content Negotiation - Suporte a JSON                    │
+ * │ 🔍 Strong Typing - Tipagem forte em responses              │
+ * └─────────────────────────────────────────────────────────────┘
  * 
- * 1. CREATE (POST /api/users)
- *    - Recebe um CreateUserCommand no body da requisição
- *    - Retorna 201 com o ID do novo usuario ou 400/500 para erros
+ * 💡 BENEFÍCIOS DA IMPLEMENTAÇÃO:
+ * ┌─────────────────────────────────────────────────────────────┐
+ * │ ✅ Código limpo e organizad                                │
+ * │ 🧪 Alta testabilidade                                      │
+ * │ 🔄 Fácil manutenção                                        │
+ * │ 📈 Escalabilidade                                          │
+ * │ 🛡️ Tratamento robusto de erros                             │
+ * │ 📚 Documentação automática                                 │
+ * │ 🎯 Separação clara de responsabilidades                    │
+ * └─────────────────────────────────────────────────────────────┘
  * 
- * 2. UPDATE (PUT /api/users)
- *    - Recebe um UpdateUsersCommand no body
- *    - Retorna 200 para sucesso, 400 para dados inválidos, 404 se não encontrar o cliente
+ * 🌟 HIGHLIGHTS ESPECIAIS:
+ * • Extension Methods personalizados (.ToActionResult())
+ * • Validação automática via Model Binding
+ * • Responses tipados para melhor IntelliSense
+ * • Códigos de status HTTP semânticos
+ * • Organização em regions para melhor navegação
+ * • Documentação rica com emojis para facilitar compreensão
  * 
- * 3. DELETE (DELETE /api/users/{id})
- *    - Recebe o GUID do usuario na URL
- *    - Cria automaticamente o DeleteUserrCommand com o ID
- *    - Retorna 200 para sucesso, 400/404/500 para erros
- * 
- * 4. GET BY ID (GET /api/users/{id})
- *    - Recebe o GUID do usuario na URL
- *    - Retorna o UserQueryModel encontrado ou 404 se não existir
- * 
- * 5. GET ALL (GET /api/users)
- *    - Lista todos os usuarios
- *    - Retorna uma coleção de UserQueryModel
- * 
- * PADRÕES UTILIZADOS:
- * - CQRS: Separação entre Commands (escrita) e Queries (leitura)
- * - Mediator: Desacopla o controller da lógica de negócio
- * - Extension Methods: .ToActionResult() converte responses para IActionResult
- * - Async/Await: Todas as operações são assíncronas
- * - Data Annotations: [Required] para validação de parâmetros
- * - Content Negotiation: Define tipos de conteúdo consumidos e produzidos (JSON)
- * 
- * BENEFÍCIOS:
- * - Código limpo e desacoplado
- * - Fácil manutenção e testabilidade
- * - Documentação automática com Swagger através dos atributos ProducesResponseType
- * - Validações automáticas do ASP.NET Core Model Binding
- * - Versionamento de API para evolução sem quebrar clientes existentes
+ * 🔮 FUTURAS EXPANSÕES POSSÍVEIS:
+ * • Implementação de UPDATE (PUT/PATCH)
+ * • Paginação para GetAll
+ * • Filtros e ordenação
+ * • Cache de consultas
+ * • Rate limiting
+ * • Autenticação e autorização
  */
