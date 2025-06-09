@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using Scalar.AspNetCore;
 using CorrelationId;
+using CoreReserve.Infrastructure.Security.Extensions;
 
 /// <summary>
 /// Ponto de entrada principal da aplicação Core Reserve API
@@ -110,7 +111,8 @@ builder.Services
     .AddReadOnlyRepositories()
     .AddCacheService(builder.Configuration)
     .AddHealthChecks(builder.Configuration)
-    .AddDefaultCorrelationId();
+    .AddDefaultCorrelationId()
+    .AddJwtAuthentication(builder.Configuration);
 
 /// <summary>
 /// Configuração do MiniProfiler para monitoramento de desempenho
