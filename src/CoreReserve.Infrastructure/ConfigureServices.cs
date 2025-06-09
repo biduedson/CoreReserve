@@ -4,7 +4,11 @@ using CoreReserve.Domain.Entities.UserAggregate;
 using CoreReserve.Infrastructure.Data.Context;
 using CoreReserve.Infrastructure.Data.Repositories;
 using CoreReserve.Infrastructure.Data.Services;
+using CoreReserve.Infrastructure.Security.Extensions;
+using CoreReserve.Infrastructure.Security.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace CoreReserve.Infrastructure.Data
 {
@@ -37,7 +41,8 @@ namespace CoreReserve.Infrastructure.Data
                 .AddScoped<WriteDbContext>()
                 .AddScoped<EventStoreDbContext>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
-                .AddScoped<IHashService, HashService>();
+                .AddScoped<IHashService, HashService>()
+                .AddScoped<IJwtTokenService, JwtTokenService>();
 
 
         /// <summary>
