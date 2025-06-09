@@ -5,7 +5,7 @@ namespace CoreReserve.Core.AppSettings
 {
     public sealed class SecuriTyOptions : IAppOptions
     {
-        public static string ConfigSectionPath => "Security";
+        static string IAppOptions.ConfigSectionPath => "Security";
 
         [Required]
         public BcryptOptions Bcrypt { get; private init; }

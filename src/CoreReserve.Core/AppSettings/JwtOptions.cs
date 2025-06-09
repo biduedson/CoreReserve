@@ -5,7 +5,7 @@ namespace CoreReserve.Core.AppSettings
 {
     public sealed class JwtOptions : IAppOptions
     {
-        public static string ConfigSectionPath => "Security:Jwt";
+        static string IAppOptions.ConfigSectionPath => "Security:Jwt";
 
         [Required]
         public string Issuer { get; private init; }

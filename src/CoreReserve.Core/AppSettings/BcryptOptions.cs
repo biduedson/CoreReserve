@@ -5,9 +5,9 @@ namespace CoreReserve.Core.AppSettings
 {
     public sealed class BcryptOptions : IAppOptions
     {
-        public static string ConfigSectionPath => "Security:Bcrypt";
+        static string IAppOptions.ConfigSectionPath => "Security:Bcrypt";
 
         [Required]
-        public int WorkFactor { get; private init; }
+        public string WorkFactor { get; private init; }
     }
 }
