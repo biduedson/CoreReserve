@@ -1,0 +1,23 @@
+name: 🔁 CoreReserve CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  code-analysis:
+    uses: ./.github/workflows/code-analysis.yml
+
+  tests:
+    uses: ./.github/workflows/tests.yml
+    needs: code-analysis
+
+  build:
+    uses: ./.github/workflows/build.yml
+    needs: tests
+
+  notify:
+    uses: ./.github/workflows/notify.yml
+    needs: [code-analysis, tests, build]

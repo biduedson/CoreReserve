@@ -1,0 +1,39 @@
+name: Run Tests
+
+on:
+  workflow_call:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        project:
+          - tests/CoreReserve.UnitTests/CoreReserve.UnitTests.csproj
+          - tests/CoreReserve.IntegrationTests/CoreReserve.IntegrationTests.csproj
+
+    name: Test - ${{ matrix.project }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore CoreReserve.sln
+
+      - name: Build
+        run: dotnet build CoreReserve.sln --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test ${{ matrix.project }} --no-build --configuration Release --logger "trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.project }}
+          path: '**/TestResults/*.trx'
