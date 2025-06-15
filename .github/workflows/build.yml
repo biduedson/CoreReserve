@@ -1,0 +1,46 @@
+name: Build and Test
+
+on:
+  workflow_call:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths-ignore:
+      - ".github/workflows/**"
+      - "**/*.md"
+      - "**/*.yml"
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  build-and-test:
+    name: Build and Test - ${{ matrix.test_project }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        test_project:
+          - tests/CoreReserve.UnitTests
+          - tests/CoreReserve.IntegrationTests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore CoreReserve.sln
+
+      - name: Build Solution
+        run: dotnet build CoreReserve.sln --no-restore --configuration Release
+
+      - name: Run Tests - ${{ matrix.test_project }}
+        run: dotnet test ${{ matrix.test_project }} --no-build --no-restore --configuration Release --verbosity minimal

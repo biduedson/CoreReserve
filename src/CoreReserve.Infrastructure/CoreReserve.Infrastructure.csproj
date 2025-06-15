@@ -49,7 +49,7 @@
 
 <ItemGroup>
   <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
-  <InternalsVisibleTo Include="Shop.UnitTests" />
+  <InternalsVisibleTo Include="CoreReserve.UnitTests" />
 </ItemGroup>
 
 </Project>

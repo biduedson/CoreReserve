@@ -1,0 +1,17 @@
+name: Notify
+
+on:
+  workflow_call:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ Success
+        if: ${{ success() }}
+        run: echo "🎉 CI executado com sucesso!"
+
+      - name: ❌ Failure
+        if: ${{ failure() }}
+        run: echo "💥 CI falhou. Verifique os jobs anteriores."

@@ -39,7 +39,7 @@ namespace CoreReserve.Application.User.Handlers
             // Recupera o cliente do banco de dados.
             var user = await repository.GetByIdAsync(request.Id);
             if (user == null)
-                return Result.NotFound($"No customer found with Id: {request.Id}");
+                return Result.NotFound($"No user found with Id: {request.Id}");
 
             // Marca a entidade como excluída, gerando o evento CustomerDeletedEvent.
             user.Delete();
