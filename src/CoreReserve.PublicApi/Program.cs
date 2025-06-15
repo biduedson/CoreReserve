@@ -21,21 +21,17 @@ using CoreReserve.Infrastructure.Security.Extensions;
 
 #region Application Configuration
 
-/// <summary>
-/// Ponto de entrada principal da aplicação Core Reserve API.
-/// Configura todos os serviços, middlewares e pipeline de requisições HTTP
-/// seguindo padrões de Clean Architecture e CQRS.
-/// </summary>
+// Ponto de entrada principal da aplicação Core Reserve API.
+// Configura todos os serviços, middlewares e pipeline de requisições HTTP
+// seguindo padrões de Clean Architecture e CQRS.
 var builder = WebApplication.CreateBuilder(args);
 
 #endregion
 
 #region Core Services Configuration
 
-/// <summary>
-/// Configuração de serviços fundamentais do ASP.NET Core incluindo
-/// compressão de resposta, serialização JSON customizada e roteamento otimizado.
-/// </summary>
+// Configuração de serviços fundamentais do ASP.NET Core incluindo
+// compressão de resposta, serialização JSON customizada e roteamento otimizado.
 builder.Services
     .Configure<GzipCompressionProviderOptions>(compressionOptions => compressionOptions.Level = CompressionLevel.Fastest)
     .Configure<JsonOptions>(jsonOptions => jsonOptions.JsonSerializerOptions.Configure())
@@ -53,10 +49,8 @@ builder.Services
 
 #region API Versioning Configuration
 
-/// <summary>
-/// Configuração avançada de versionamento da API com suporte a múltiplas versões
-/// simultâneas e documentação automática de versões disponíveis.
-/// </summary>
+// Configuração avançada de versionamento da API com suporte a múltiplas versões
+// simultâneas e documentação automática de versões disponíveis.
 builder.Services
     .AddApiVersioning(versioningOptions =>
     {
@@ -74,10 +68,8 @@ builder.Services
 
 #region Documentation and Security Services
 
-/// <summary>
-/// Configuração de serviços de documentação OpenAPI, proteção de dados
-/// e controladores MVC com comportamento personalizado para APIs.
-/// </summary>
+// Configuração de serviços de documentação OpenAPI, proteção de dados
+// e controladores MVC com comportamento personalizado para APIs.
 builder.Services.AddOpenApi();
 builder.Services.AddDataProtection();
 builder.Services.AddControllers()
@@ -92,11 +84,9 @@ builder.Services.AddControllers()
 
 #region CORS Configuration
 
-/// <summary>
-/// Configuração de política CORS diferenciada por ambiente.
-/// Desenvolvimento: permissivo para facilitar testes.
-/// Produção: restritivo para segurança.
-/// </summary>
+// Configuração de política CORS diferenciada por ambiente.
+// Desenvolvimento: permissivo para facilitar testes.
+// Produção: restritivo para segurança.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ScalarPolicy", policy =>
@@ -124,11 +114,9 @@ builder.Services.AddCors(options =>
 
 #region Application-Specific Services
 
-/// <summary>
-/// Registro de todos os serviços específicos da aplicação Core Reserve
-/// seguindo arquitetura Clean Architecture com CQRS, Repository Pattern
-/// e separação de contextos de leitura/escrita para otimização de performance.
-/// </summary>
+// Registro de todos os serviços específicos da aplicação Core Reserve
+// seguindo arquitetura Clean Architecture com CQRS, Repository Pattern
+// e separação de contextos de leitura/escrita para otimização de performance.
 builder.Services
     .ConfigureAppSettings()
     .AddInfrastructure()
@@ -147,12 +135,10 @@ builder.Services
 
 #region Performance Monitoring
 
-/// <summary>
-/// Configuração do MiniProfiler para monitoramento detalhado de performance.
-/// Permite análise em tempo real de queries SQL, tempo de resposta
-/// e gargalos de performance da aplicação.
-/// Documentação: https://miniprofiler.com/dotnet/
-/// </summary>
+// Configuração do MiniProfiler para monitoramento detalhado de performance.
+// Permite análise em tempo real de queries SQL, tempo de resposta
+// e gargalos de performance da aplicação.
+// Documentação: https://miniprofiler.com/dotnet/
 builder.Services.AddMiniProfiler(options =>
 {
     // Rota para exibição do perfil de execução: /profiler/results-index
@@ -167,11 +153,9 @@ builder.Services.AddMiniProfiler(options =>
 
 #region Service Provider Validation
 
-/// <summary>
-/// Configuração de validação rigorosa do container de dependências.
-/// Garante detecção precoce de problemas de configuração de DI
-/// e valida escopos de serviços em ambiente de desenvolvimento.
-/// </summary>
+// Configuração de validação rigorosa do container de dependências.
+// Garante detecção precoce de problemas de configuração de DI
+// e valida escopos de serviços em ambiente de desenvolvimento.
 builder.Host.UseDefaultServiceProvider((context, serviceProviderOptions) =>
 {
     serviceProviderOptions.ValidateScopes = context.HostingEnvironment.IsDevelopment();
@@ -182,20 +166,16 @@ builder.Host.UseDefaultServiceProvider((context, serviceProviderOptions) =>
 
 #region Kestrel Server Configuration
 
-/// <summary>
-/// Configuração específica do servidor Kestrel com remoção do header
-/// de servidor por questões de segurança (security through obscurity).
-/// </summary>
+// Configuração específica do servidor Kestrel com remoção do header
+// de servidor por questões de segurança (security through obscurity).
 builder.WebHost.UseKestrel(kestrelOptions => kestrelOptions.AddServerHeader = false);
 
 #endregion
 
 #region FluentValidation Global Settings
 
-/// <summary>
-/// Configuração global do FluentValidation para padronização
-/// de resolução de nomes de propriedades e idioma das mensagens de validação.
-/// </summary>
+// Configuração global do FluentValidation para padronização
+// de resolução de nomes de propriedades e idioma das mensagens de validação.
 ValidatorOptions.Global.DisplayNameResolver = (_, member, _) => member?.Name;
 ValidatorOptions.Global.LanguageManager = new LanguageManager { Enabled = true, Culture = new CultureInfo("en-US") };
 
@@ -203,20 +183,16 @@ ValidatorOptions.Global.LanguageManager = new LanguageManager { Enabled = true, 
 
 #region Application Pipeline
 
-/// <summary>
-/// Construção da aplicação com todos os serviços configurados.
-/// </summary>
+// Construção da aplicação com todos os serviços configurados.
 var app = builder.Build();
 
 #endregion
 
 #region Development Environment Configuration
 
-/// <summary>
-/// Configuração específica para ambiente de desenvolvimento.
-/// Habilita página detalhada de exceções para facilitar debugging
-/// e resolução de problemas durante o desenvolvimento.
-/// </summary>
+// Configuração específica para ambiente de desenvolvimento.
+// Habilita página detalhada de exceções para facilitar debugging
+// e resolução de problemas durante o desenvolvimento.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -226,11 +202,9 @@ if (app.Environment.IsDevelopment())
 
 #region Health Checks Endpoint
 
-/// <summary>
-/// Configuração do endpoint de Health Checks para monitoramento
-/// automático da saúde da aplicação e suas dependências.
-/// Endpoint acessível em: GET /health
-/// </summary>
+// Configuração do endpoint de Health Checks para monitoramento
+// automático da saúde da aplicação e suas dependências.
+// Endpoint acessível em: GET /health
 app.UseHealthChecks("/health", new HealthCheckOptions
 {
     Predicate = _ => true,
@@ -241,21 +215,17 @@ app.UseHealthChecks("/health", new HealthCheckOptions
 
 #region OpenAPI Documentation
 
-/// <summary>
-/// Mapeamento do endpoint OpenAPI para geração automática
-/// da especificação da API baseada nos controladores e modelos.
-/// </summary>
+// Mapeamento do endpoint OpenAPI para geração automática
+// da especificação da API baseada nos controladores e modelos.
 app.MapOpenApi();
 
 #endregion
 
 #region Scalar API Documentation
 
-/// <summary>
-/// Configuração do Scalar como interface moderna de documentação da API.
-/// Substitui o Swagger UI tradicional com uma experiência mais rica.
-/// Interface acessível em: /scalar/v1
-/// </summary>
+// Configuração do Scalar como interface moderna de documentação da API.
+// Substitui o Swagger UI tradicional com uma experiência mais rica.
+// Interface acessível em: /scalar/v1
 app.MapScalarApiReference(scalarOptions =>
 {
     scalarOptions.DarkMode = true;
@@ -269,11 +239,9 @@ app.MapScalarApiReference(scalarOptions =>
 
 #region Middleware Pipeline
 
-/// <summary>
-/// Configuração do pipeline de middlewares na ordem específica.
-/// A ordem é crítica pois cada middleware processa requisições
-/// sequencialmente e pode afetar o comportamento dos subsequentes.
-/// </summary>
+// Configuração do pipeline de middlewares na ordem específica.
+// A ordem é crítica pois cada middleware processa requisições
+// sequencialmente e pode afetar o comportamento dos subsequentes.
 app.UseCors("ScalarPolicy");       // Política de CORS para requisições cross-origin
 app.UseErrorHandling();           // Tratamento global centralizado de erros
 app.UseResponseCompression();     // Compressão GZIP das respostas HTTP
@@ -288,10 +256,8 @@ app.MapControllers();            // Mapeamento de rotas para controladores
 
 #region Application Startup
 
-/// <summary>
-/// Inicialização assíncrona da aplicação com todos os serviços
-/// configurados e pipeline de middlewares estabelecido.
-/// </summary>
+// Inicialização assíncrona da aplicação com todos os serviços
+// configurados e pipeline de middlewares estabelecido.
 await app.RunAppAsync();
 
 #endregion
