@@ -44,8 +44,9 @@ namespace CoreReserve.Application.User.Handlers
 
             // Verifica se já existe um cliente com o mesmo e-mail.
             if (await repository.ExistsByEmailAsync(email))
-                return Result<CreatedUserResponse>.Error("The email address you provided is already in use.");
-
+            {
+                return Result<CreatedUserResponse>.Error("The provided email address is already in use.");
+            }
             // Cria uma instância da entidade Cliente.
             // Ao ser criada, o evento "UserCreatedEvent" será gerado automaticamente.
             var user = UserFactory.Create(
