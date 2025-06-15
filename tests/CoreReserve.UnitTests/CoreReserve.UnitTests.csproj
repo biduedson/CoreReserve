@@ -63,6 +63,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CoreReserve.Infrastructure\CoreReserve.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\SCoreReserve.Domain\CoreReserve.Domain.csproj" />
+    <ProjectReference Include="..\..\src\CoreReserve.Core\CoreReserve.Core.csproj" />
+    <ProjectReference Include="..\..\src\CoreReserve.Application\CoreReserve.Application.csproj" />
+    <ProjectReference Include="..\..\src\CoreReserve.PublicApi\CoreReserve.PublicApi.csproj" />
+    <ProjectReference Include="..\..\src\CoreReserve.Query\CoreReserve.Query.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
