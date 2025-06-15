@@ -15,7 +15,7 @@ namespace CoreReserve.Application.User.Commands
         [Required]
         [MaxLength(100)]
         [DataType(DataType.Text)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gênero do cliente.
@@ -28,7 +28,7 @@ namespace CoreReserve.Application.User.Commands
         [Required]
         [MaxLength(200)]
         [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Password do cliente.
@@ -36,7 +36,7 @@ namespace CoreReserve.Application.User.Commands
         [Required]
         [MinLength(6)]
         [MaxLength(20)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }
 
